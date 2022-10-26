@@ -1,0 +1,43 @@
+---
+version: "2.0"
+
+services:
+  website:
+    image: cosmicvalidator/website:v0.2.9
+    expose:
+      - port: 80
+        as: 80
+        to:
+          - global: true
+        accept:
+          - www.cosmicvalidator.com
+          - cosmicvalidator.com
+
+profiles:
+  compute:
+    website:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          size: 1Gi
+  placement:
+    westcoast:
+      attributes:
+        host: akash
+      signedBy:
+        anyOf:
+          - "akash1365yvmc4s7awdyj3n2sav7xfx76adc6dnmlx63"
+      pricing:
+        website: 
+          denom: uakt
+          amount: 20
+
+deployment:
+  website:
+    westcoast:
+      profile: website
+      count: 1
+
